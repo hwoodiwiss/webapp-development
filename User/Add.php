@@ -56,6 +56,9 @@ if($_SERVER['REQUEST_METHOD'] === 'GET')
 	$admLevel = new class { public $id = 'Admin'; public $value = 'Admin';};
 	$accessLevels = array($usrLevel, $susrLevel, $admLevel);
 }
+
+HtmlHelper::$_Title = 'Add User';
+
 ?>
 
 <form action="/User/Add.php" method="POST">

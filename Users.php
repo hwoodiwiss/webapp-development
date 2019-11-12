@@ -5,12 +5,16 @@ ini_set('display_startup_errors', 1);
 require_once './core/utils.php';
 require_once './core/database.php';
 require_once './User/Model.php';
+require_once './core/html.php';
+
+HtmlHelper::$_Title = 'Users';
 
 session_start();
 
 if(SafeGetValue($_SESSION, 'auth') == null || $_SESSION['auth'] != true)
 {
 	header('Location: /login.php');
+	exit();
 }
 
 $user = SafeGetValue($_SESSION, 'User');

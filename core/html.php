@@ -4,8 +4,13 @@ require_once 'utils.php';
 
 class HtmlHelper
 {
+	public static $_Title;
+	public static $_ViewData;
+
 	function __construct()
 	{
+		$this->m_title = "";
+		HtmlHelper::$_ViewData = array();
 		//Start an output buffer for html to be written to.
 		ob_start();
 	}
@@ -47,20 +52,38 @@ class HtmlHelper
 	}
 
 	//Renders the buffered output, configurable as to whether to use layout file, and which file to use.
-	public function Render(bool $useLayout = true, string $layoutFile = __DIR__ . "\\..\\layout.html")
+	public function Render(bool $useLayout = true, string $layoutFile = "_layout.php", string $layoutDir = __DIR__ . "\\..\\Views\\")
 	{
-		$layout = "{content}";
-		if($useLayout === true)
+		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
 		{
-			if(file_exists($layoutFile))
+			$useLayout = false;
+		}
+		
+		if(isset(HtmlHelper::$_Title))
+		{
+			HtmlHelper::$_ViewData['Title'] = HtmlHelper::$_Title;
+		}
+		else
+		{
+			HtmlHelper::$_ViewData['Title'] = '';
+		}
+
+		HtmlHelper::$_ViewData['BodyContent'] = ob_get_clean();
+
+		if($useLayout === true && $layoutFile != null)
+		{
+			if(file_exists($layoutDir . $layoutFile))
 			{
-				$layout = file_get_contents($layoutFile);
+				ob_start();
+				include $layoutDir . $layoutFile;
+				echo ob_get_clean();
 			}
 		}
-		$content = ob_get_clean();
-		$page = str_replace('{content}', $content, $layout);
+		else
+		{
+			echo HtmlHelper::$_ViewData['BodyContent'];
+		}
 
-		echo $page;
 	}
 }
 

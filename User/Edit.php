@@ -81,6 +81,8 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
 }
 
+HtmlHelper::$_Title = 'Edit User';
+
 ?>
 
 <form action="/User/Edit.php" method="POST">

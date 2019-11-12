@@ -1,6 +1,7 @@
 <?php
 require_once './core/utils.php';
 require_once './core/html.php';
+HtmlHelper::$_Title = 'Login';
 
 if(!$_SERVER['REQUEST_METHOD'] === 'GET')
 {
@@ -13,7 +14,8 @@ if($err !== null)
 {
 	if($err === 'UsernameOrPassword')
 	{
-		echo('<p>The username or password was incorrect!</p>');
+		echo('<div class="alert alert-danger" role="alert">Username or Password is Incorrect!<button type="button"
+		 class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 	}
 }
 
