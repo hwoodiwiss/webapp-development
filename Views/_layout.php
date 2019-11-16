@@ -17,9 +17,11 @@
 	<link rel="stylesheet" type="text/css" href="/css/datatables.min.css" />
 	<script type="text/javascript" src="/js/datatables.min.js"></script>
 </head>
-
-<body class="container">
-	<?php echo $viewData['BodyContent'] ?>
+<body>
+	<?php include 'navbar.php' ?>
+	<div class="container">
+		<?php echo $viewData['BodyContent'] ?>
+	</div>
 </body>
 
 </html>
