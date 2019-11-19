@@ -2,9 +2,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
+require_once './Model/User.php';
 require_once './core/utils.php';
 require_once './core/database.php';
-require_once './User/Model.php';
 require_once './core/html.php';
 
 HtmlHelper::$_Title = 'Users';

@@ -11,7 +11,11 @@ class User extends DBData
 	public $AccessLevel;
 	public $FirstName;
 	public $LastName;
+	public $JobTitle;
+	public $AccessLevelId;
 	public $Timestamp;
+	public $Active;
+
 }
 
 ?>

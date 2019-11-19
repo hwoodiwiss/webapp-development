@@ -16,7 +16,7 @@ class HtmlHelper
 	}
 
 	//Helper to create a dropdown list for an array, with the ability to specify value and text fields and html classes
-	public function DropDownListFor(array $model, string $id, string $class, string $value = 'id', string $text = 'value', string $selected = null)
+	public function DropDownList(array $model, array $htmlAttributes = null, string $value = 'id', string $text = 'value', string $selected = null)
 	{
 		if(count($model) > 0)
 		{
@@ -31,8 +31,8 @@ class HtmlHelper
 			{
 				throw new InvalidArgumentException('$text argument ' . $text . ' does not correspond with a field in the provided model');
 			}
-			
-			echo '<select id="' . $id . '" class="' . $class . '">';
+
+			echo '<select '. $this->GetHtmlAttribStr($htmlAttributes) .'>';
 			for($index = 0; $index < count($model); $index++)
 			{
 				$selectedAttrib = $selected != null ? ($model[$index]->$value == $selected ? ' selected="selected"' : '') : '';
@@ -42,13 +42,20 @@ class HtmlHelper
 		}
 		else
 		{
-			echo '<select id="' . $id . '" name="' . $id . '" class="' . $class . '" />';
+			echo '<select '. $this->GetHtmlAttribStr($htmlAttributes) . ' />';
 		}
 	}
 
-	public function TextBoxFor(string $model)
+	public function TextBox(string $model, array $htmlAttributes = null, $type = "text")
 	{
-		
+		if($htmlAttributes != null && array_key_exists('type', $htmlAttributes))
+		{
+			echo '<input ' . $this->GetHtmlAttribStr($htmlAttributes) . '>' . $model . '</input>';
+		}
+		else
+		{
+			echo '<input type="'. $type .'" ' . $this->GetHtmlAttribStr($htmlAttributes) . '>' . $model . '</input>';
+		}
 	}
 
 	//Renders the buffered output, configurable as to whether to use layout file, and which file to use.
@@ -68,7 +75,7 @@ class HtmlHelper
 			HtmlHelper::$_ViewData['Title'] = '';
 		}
 
-		HtmlHelper::$_ViewData['BodyContent'] = ob_get_clean();
+		HtmlHelper::$_ViewData['Body'] = ob_get_clean();
 
 		if($useLayout === true && $layoutFile != null)
 		{
@@ -81,9 +88,23 @@ class HtmlHelper
 		}
 		else
 		{
-			echo HtmlHelper::$_ViewData['BodyContent'];
+			echo HtmlHelper::$_ViewData['Body'];
 		}
 
+	}
+
+	private function GetHtmlAttribStr(array $htmlAttributes)
+	{
+		if($htmlAttributes == null) return "";
+
+		$htmlAttribStr = "";
+
+		foreach($htmlAttributes as $name => $value)
+		{
+			$htmlAttribStr = $htmlAttribStr . $name . '="' . $value . '" '; 
+		}
+
+		return $htmlAttribStr;
 	}
 }
 

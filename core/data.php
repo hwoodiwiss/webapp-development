@@ -32,6 +32,26 @@ class DBData
 		return $output;
 	}
 
+	public static function FromJson(string $jsonString, string $typeName)
+	{
+		if(!class_exists($typename)) return null;
+		$outObj = $typeName();
+		$jsobj = json_decode($jsonString, true);
+		$props = get_object_vars($outObj);
+		foreach($props as $key => $value)
+		{
+			$outObj->$key = SafeGetValue($jsobj, $key);
+		}
+
+		return $outObj;
+	}
+
+	public function AsJson()
+	{
+		return json_encode($this);
+	}
+
 }
+
 
 ?>

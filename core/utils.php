@@ -72,9 +72,9 @@
 		}
 	}
 
-	function ValidatePOSTValue(string $name)
+	function ValidatePOSTValue(string $name, bool $required = false)
 	{
-		if(empty($name))
+		if(empty($name) && $reqired)
 		{
 			http_response_code(400);
 			$response = new ResponseMessage(false, 'Invalid data provided');
@@ -90,6 +90,7 @@
 
 		return $_POST[$name];
 	}
+
 
 class ResponseData extends ResponseMessage
 {

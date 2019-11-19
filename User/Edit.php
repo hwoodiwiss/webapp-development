@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Model.php';
+require_once '../Model/User.php';
 require_once '../core/database.php';
 require_once '../core/html.php';
 
@@ -97,7 +97,7 @@ HtmlHelper::$_Title = 'Edit User';
 		<label>LastName</label>
 		<input class="form-control" type="text" name="lname" value="<?php echo $gUser->LastName ?>" />
 		<label>Access Level</label>
-		<?php $HTML->DropDownListFor($accessLevels, 'alevels', 'form-control', 'id', 'value', $gUser->AccessLevel); ?>
+		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control'], 'id', 'value', $gUser->AccessLevel); ?>
 		<hr />
 		<button class="btn btn-success" type="submit">Update</button>
 		<a class="btn btn-warning" href="/Users.php">Cancel</a>

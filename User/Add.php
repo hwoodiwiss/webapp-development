@@ -2,10 +2,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
+require_once '../Model/User.php';
 require_once '../core/utils.php';
 require_once '../core/database.php';
 require_once '../core/html.php';
-require_once 'Model.php';
 
 session_start();
 
@@ -64,15 +64,15 @@ HtmlHelper::$_Title = 'Add User';
 <form action="/User/Add.php" method="POST">
 	<div class="row">
 		<label>Email</label>
-		<input class="form-control" type="email" name="email" />
+		<?php $HTML->TextBox("", ['id' => 'email', 'class' => 'form-control', 'type' => 'email']); ?>
 		<label>Password</label>
-		<input class="form-control" type="password" name="password" />
+		<?php $HTML->TextBox("", ['id' => 'password', 'class' => 'form-control', 'type' => 'password']); ?>
 		<label>FirstName</label>
-		<input class="form-control" type="text" name="fname" />
+		<?php $HTML->TextBox("", ['id' => 'fname', 'class' => 'form-control']); ?>
 		<label>LastName</label>
-		<input class="form-control" type="text" name="lname" />
+		<?php $HTML->TextBox("", ['id' => 'lname', 'class' => 'form-control']); ?>
 		<label>Access Level</label>
-		<?php $HTML->DropDownListFor($accessLevels, 'alevels', 'form-control'); ?>
+		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control']); ?>
 		<hr />
 		<button class="btn btn-success" type="submit">Save</button>
 	</div>

@@ -5,16 +5,17 @@
 
 	class DB extends PDO
 	{
-		public function __construct($file = __DIR__ . "\\..\\settings.ini")
+		
+		public function __construct($file = __DIR__ . "\\..\\settings.ini", string $section = "database")
 		{
 			if(!$settings = parse_ini_file($file, TRUE))
 				throw new exception("Cannot open settings file " . $file);
-			$connString = $settings['database']['driver'] .
-				':host=' . $settings['database']['host'] .
-				((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']):'').
-				';dbname=' . $settings['database']['database'];
+			$connString = $settings[$section]['driver'] .
+				':host=' . $settings[$section]['host'] .
+				((!empty($settings[$section]['port'])) ? (';port=' . $settings[$section]['port']):'').
+				';dbname=' . $settings[$section]['database'];
 
-				parent::__construct($connString, $settings['database']['username'], $settings['database']['password']);
+				parent::__construct($connString, $settings[$section]['username'], $settings[$section]['password']);
 		}
 
 	}

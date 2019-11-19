@@ -20,7 +20,7 @@
 <body>
 	<?php include 'navbar.php' ?>
 	<div class="container">
-		<?php echo $viewData['BodyContent'] ?>
+		<?php echo $viewData['Body'] ?>
 	</div>
 </body>
 
