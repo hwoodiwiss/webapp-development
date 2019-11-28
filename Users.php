@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 require_once './Model/User.php';
+require_once './Model/UserAccessLevel.php';
 require_once './core/utils.php';
 require_once './core/database.php';
 require_once './core/html.php';
@@ -26,7 +27,8 @@ if($user->AccessLevelId != 'Admin')
 
 $ShowInactive = SafeGetValue($_GET, "Active");
 
-$users = $Users->Select([], [Active => true]);
+$users = $Users->Select([], [new DbCondition("Active", true)]);
+$accessLevels = $UserAccessLevels->Select([]);
 
 $userCount = count($users);
 
@@ -47,7 +49,7 @@ $userCount = count($users);
 			for($i = 0; $i < $userCount; $i++)
 			{
 				$curr = $users[$i];
-				echo('<tr><td>'.$curr->Email.'</td><td>'.$curr->FirstName.'</td><td>'.$curr->LastName.'</td><td>'.$curr->AccessLevelId.'</td><td><a class="btn btn-info" href="/User/Edit.php?Id='.$curr->Id.'">Edit</a></td></tr>');
+				echo('<tr><td>'.$curr->Email.'</td><td>'.$curr->FirstName.'</td><td>'.$curr->LastName.'</td><td>'.$curr->AccessLevel->Name.'</td><td><a class="btn btn-info" href="/User/Edit.php?Id='.$curr->Id.'">Edit</a></td></tr>');
 			}
 		?>
 	</tbody>

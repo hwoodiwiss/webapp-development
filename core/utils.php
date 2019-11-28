@@ -98,31 +98,80 @@
 		return $_POST[$name];
 	}
 
-	function GetAnnotatedType(string $ClassName, string $Property) : string
+	function GetPropertyAnnotations(string $ClassName, string $Property) : array
 	{
 		$propReflection = new ReflectionProperty($ClassName, $Property);
-		$phDoc = $propReflection->getDocComment();
-		$typeName = "";
-		if($phDoc != false)
+		$docComment = $propReflection->getDocComment();
+		$Annotations = array();
+		if($docComment != false)
 		{
-			$phDoc = str_replace("/** ", "", $phDoc);
-			$phDoc = str_replace(" */", "", $phDoc);
+			$docComment = str_replace("*", "", $docComment);
+			$docComment = str_replace("/", "", $docComment);
+			$docDataAnnots = explode("@", $docComment);
 
-			$phDocAnnots = explode("@", $phDoc);
-
-			foreach($phDocAnnots as $value)
+			foreach($docDataAnnots as $value)
 			{
+				$value = trim($value);
 				$keyVal = explode(" ", $value);
 				if(count($keyVal) == 2)
 				{
-					if($keyVal[0] == "var")
-					{
-						$typeName = $keyVal[1];
-					}
+					$Annotations[$keyVal[0]] = $keyVal[1];
 				}
 			}
 		}
-		return $typeName;
+
+		return $Annotations;
+	}
+
+	function Where(array $Collection, $Predicate)
+	{
+		$output = array();
+
+		foreach($Collection as $Value)
+		{
+			if($Predicate($Value))
+			{
+				$output[] = $Value;
+			}
+		}
+
+		return $output;
+	}
+
+	function Find(array $Collection, $Predicate)
+	{
+		foreach($Collection as $Value)
+		{
+			if($Predicate($Value)) return $Value;
+		}
+
+		return null;
+	}
+
+	//Safely verifies that the session is available
+	function StartSession() : void
+	{
+		if(!isset($_SESSION))
+		{
+			session_start();
+		}
+	}
+
+	function RequireAuth()
+	{
+		if(!isset($_SESSION))
+		{
+			if(SafeGetValue($_SESSION, 'auth') == null || $_SESSION['auth'] != true)
+			{
+				header('Location: /login.php?location=' . urlencode($_SERVER['REQUEST_URI']));
+				exit();
+			}
+		}
+		else
+		{
+			header('Location: /login.php?location=' . urlencode($_SERVER['REQUEST_URI']));
+			exit();
+		}
 	}
 
 

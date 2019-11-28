@@ -7,12 +7,8 @@ require_once '../Model/UserAccessLevel.php';
 require_once '../core/utils.php';
 require_once '../core/html.php';
 
-session_start();
-
-if(SafeGetValue($_SESSION, 'auth') == null || $_SESSION['auth'] != true)
-{
-	header('Location: /login.php');
-}
+SessionStart();
+RequireAuth();
 
 $user = SafeGetValue($_SESSION, 'User');
 

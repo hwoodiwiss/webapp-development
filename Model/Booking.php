@@ -6,7 +6,15 @@ require_once __DIR__ .'\\..\\core\\database.php';
 class Booking extends DbData
 {
 	public $Id;
+	/** @var integer
+	 * 	@fkey-alias User
+	 * 	@fkey-table Users
+	 */
 	public $UserId;
+	/** @var integer
+	 * 	@fkey-alias Course
+	 * 	@fkey-table Courses
+	 */
 	public $CourseId;
 }
 

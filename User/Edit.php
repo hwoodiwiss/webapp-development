@@ -59,7 +59,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST')
 	$alevel = ValidatePOSTValue('alevels');
 
 	$updateUser = $Users->Find($uid);
-
+	$uAl = $updateUser->AccessLevel;
 	if($updateUser != null)
 	{
 		$updateUser->Email = $email;

@@ -12,7 +12,10 @@ class User extends DbData
 	public $FirstName;
 	public $LastName;
 	public $JobTitle;
-	/** @var integer */
+	/** @var integer
+	 *  @fkey-alias AccessLevel
+	 *  @fkey-table UserAccessLevels
+	 */
 	public $AccessLevelId;
 	public $Timestamp;
 	/** @var boolean */
