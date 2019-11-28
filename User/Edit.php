@@ -1,7 +1,9 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 require_once '../Model/User.php';
-require_once '../core/database.php';
+require_once '../Model/UserAccessLevel.php';
 require_once '../core/html.php';
 
 session_start();
@@ -29,55 +31,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
 		header('User not found', false, 404);
 		exit();
 	}
-
-	$db = new DB();
-	$stmt = $db->prepare('SELECT * FROM Users WHERE Id = :id');
-	$stmt->bindParam(':id', $uid, PDO::PARAM_INT);
-
-	if (!$stmt->execute()) {
-		die('An error occured:' . $stmt->errorInfo()[2]);
-	}
-
-	$data = $stmt->fetchAll();
 	
-	if (count($data) !== 1) 
+	$gUser = $Users->Find($uid);
+	if ($gUser === null) 
 	{
-	   die('More than one record found for the provided id, this should not be possible.');
+		header('User not found', false, 404);
+		exit();
 	}
 
-	$gUser = new User($data[0]);
+	$accessLevels = $UserAccessLevels->Select([]);
 
-	$usrLevel = new class { public $id = 'User'; public $value = 'User';};
-	$susrLevel = new class { public $id = 'SuperUser'; public $value = 'SuperUser';};
-	$admLevel = new class { public $id = 'Admin'; public $value = 'Admin';};
-	$accessLevels = array($usrLevel, $susrLevel, $admLevel);
 } 
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 {
 	$uid = ValidatePOSTValue('id');
 	$email = ValidatePOSTValue('email');
-	$passSalt = hash('sha512', GenerateRandomString(128), false);
-	$passHash = hash('sha512', ValidatePOSTValue('password') . $passSalt, false);
+	$passSalt = null;
+	$passHash = null;
+	if(ValidatePOSTValue('password') != null)
+	{
+		$passSalt = hash('sha512', GenerateRandomString(128), false);
+		$passHash = hash('sha512', ValidatePOSTValue('password') . $passSalt, false);
+	}
 	$fname = ValidatePOSTValue('fname');
 	$lname = ValidatePOSTValue('lname');
-	$alevel = ValidatePOSTValue('alevel');
-	$ts = CurrentDateTime();
+	$jobTitle = ValidatePOSTValue('jtitle');
+	$alevel = ValidatePOSTValue('alevels');
 
+	$updateUser = $Users->Find($uid);
 
-	$db = new DB();
-	$stmt = $db->prepare('SELECT * FROM Users WHERE Id = :id');
-	$stmt->bindParam(':id', $uid, PDO::PARAM_INT);
-
-	if (!$stmt->execute()) {
-		die('An error occured:' . $stmt->errorInfo()[2]);
-	}
-
-	$data = $stmt->fetchAll();
-	
-	if (count($data) !== 1) 
+	if($updateUser != null)
 	{
-	   die('More than one record found for the provided id, this should not be possible.');
+		$updateUser->Email = $email;
+		$updateUser->PassHash = $passHash;
+		$updateUser->PassSalt = $passSalt;
+		$updateUser->FirstName = $fname;
+		$updateUser->LastName = $lname;;
+		$updateUser->AccessLevelId = $alevel;
+		$updateUser->JobTitle = $jobTitle;
+
+		$Users->UpdateObj($updateUser);
 	}
+
+	header('Location: /Users.php');
+	exit();
 
 }
 
@@ -89,15 +86,17 @@ HtmlHelper::$_Title = 'Edit User';
 	<div class="row">
 		<input name="id" type="hidden" value="<?php echo $gUser->Id ?>" />
 		<label>Email</label>
-		<input class="form-control" type="email" name="email" value="<?php echo $gUser->Email ?>" />
+		<?php $HTML->TextBox($gUser->Email, ['id' => 'email', 'class' => 'form-control', 'type' => 'email']); ?>
 		<label>Password</label>
-		<input class="form-control" type="password" name="password" />
-		<label>FirstName</label>
-		<input class="form-control" type="text" name="fname" value="<?php echo $gUser->FirstName ?>" />
-		<label>LastName</label>
-		<input class="form-control" type="text" name="lname" value="<?php echo $gUser->LastName ?>" />
+		<?php $HTML->TextBox("", ['id' => 'password', 'class' => 'form-control', 'type' => 'password']); ?>
+		<label>Firstname</label>
+		<?php $HTML->TextBox($gUser->FirstName, ['id' => 'fname', 'class' => 'form-control']); ?>
+		<label>Lastname</label>
+		<?php $HTML->TextBox($gUser->LastName, ['id' => 'lname', 'class' => 'form-control']); ?>
+		<label>Job Title</label>
+		<?php $HTML->TextBox($gUser->JobTitle, ['id' => 'jtitle', 'class' => 'form-control']); ?>
 		<label>Access Level</label>
-		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control'], 'id', 'value', $gUser->AccessLevel); ?>
+		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control'], 'Id', 'Name', $gUser->AccessLevelId); ?>
 		<hr />
 		<button class="btn btn-success" type="submit">Update</button>
 		<a class="btn btn-warning" href="/Users.php">Cancel</a>

@@ -1,21 +1,25 @@
 <?php
 
-require_once __DIR__ .'\\..\\core\\data.php';
+require_once __DIR__ .'\\..\\core\\database.php';
 
-class User extends DBData
+class User extends DbData
 {
+	/** @var integer */
 	public $Id;
 	public $Email;
 	public $PassHash;
 	public $PassSalt;
-	public $AccessLevel;
 	public $FirstName;
 	public $LastName;
 	public $JobTitle;
+	/** @var integer */
 	public $AccessLevelId;
 	public $Timestamp;
+	/** @var boolean */
 	public $Active;
 
 }
+
+$Users = new DbHelper("User");
 
 ?>

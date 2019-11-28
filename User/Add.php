@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 require_once '../Model/User.php';
+require_once '../Model/UserAccessLevel.php';
 require_once '../core/utils.php';
-require_once '../core/database.php';
 require_once '../core/html.php';
 
 session_start();
@@ -28,33 +28,29 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
 	$passHash = hash('sha512', ValidatePOSTValue('password') . $passSalt, false);
 	$fname = ValidatePOSTValue('fname');
 	$lname = ValidatePOSTValue('lname');
-	$alevel = ValidatePOSTValue('alevel');
+	$alevel = ValidatePOSTValue('alevels');
+	$jobTitle = ValidatePOSTValue('jtitle');
 	$ts = CurrentDateTime();
 
-	$db = new DB();
-	$stmt = $db->prepare('INSERT INTO Users (Email, PassHash, PassSalt, FirstName, LastName, AccessLevel, Timestamp) VALUES (:email, :pass, :salt, :fname, :lname, :access, :timestamp)');
-	$stmt->bindParam(':email', $email, PDO::PARAM_STR);
-	$stmt->bindParam(':pass', $passHash, PDO::PARAM_STR);
-	$stmt->bindParam(':salt', $passSalt, PDO::PARAM_STR);
-	$stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
-	$stmt->bindParam(':lname', $lname, PDO::PARAM_STR);
-	$stmt->bindParam(':access', $alevel, PDO::PARAM_STR);
-	$stmt->bindParam(':timestamp', $ts, PDO::PARAM_STR);
+	$NewUser = new User();
+	$NewUser->Email = $email;
+	$NewUser->PassHash = $passHash;
+	$NewUser->PassSalt = $passSalt;
+	$NewUser->FirstName = $fname;
+	$NewUser->LastName = $lname;;
+	$NewUser->AccessLevelId = $alevel;
+	$NewUser->JobTitle = $jobTitle;
+	$NewUser->Active = true;
+	$NewUser->Timestamp = $ts;
 
-	if(!$stmt->execute())
-	{
-		die('An error occured: ' . $stmt->errorInfo()[2]);
-	}
+	$Users->InsertObj($NewUser);
 
-	header('Location: /users.php');
+	header('Location: /Users.php');
 }
 $accessLevels = array();
 if($_SERVER['REQUEST_METHOD'] === 'GET')
 {
-	$usrLevel = new class { public $id = 'User'; public $value = 'User';};
-	$susrLevel = new class { public $id = 'SuperUser'; public $value = 'SuperUser';};
-	$admLevel = new class { public $id = 'Admin'; public $value = 'Admin';};
-	$accessLevels = array($usrLevel, $susrLevel, $admLevel);
+	$accessLevels = $UserAccessLevels->Select([]);
 }
 
 HtmlHelper::$_Title = 'Add User';
@@ -71,8 +67,10 @@ HtmlHelper::$_Title = 'Add User';
 		<?php $HTML->TextBox("", ['id' => 'fname', 'class' => 'form-control']); ?>
 		<label>LastName</label>
 		<?php $HTML->TextBox("", ['id' => 'lname', 'class' => 'form-control']); ?>
+		<label>Job Title</label>
+		<?php $HTML->TextBox("", ['id' => 'jtitle', 'class' => 'form-control']); ?>
 		<label>Access Level</label>
-		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control']); ?>
+		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control'], 'Id', 'Name'); ?>
 		<hr />
 		<button class="btn btn-success" type="submit">Save</button>
 	</div>

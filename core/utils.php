@@ -74,7 +74,7 @@
 
 	function ValidatePOSTValue(string $name, bool $required = false)
 	{
-		if(empty($name) && $reqired)
+		if(empty($name) && $required)
 		{
 			http_response_code(400);
 			$response = new ResponseMessage(false, 'Invalid data provided');
@@ -83,12 +83,46 @@
 
 		if(empty($_POST[$name]))
 		{
-			http_response_code(400);
-			$response = new ResponseMessage(false, 'Invalid data provided: ' . $name);
-			die($response->json());
+			if($required)
+			{
+				http_response_code(400);
+				$response = new ResponseMessage(false, 'Invalid data provided: ' . $name);
+				die($response->json());
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		return $_POST[$name];
+	}
+
+	function GetAnnotatedType(string $ClassName, string $Property) : string
+	{
+		$propReflection = new ReflectionProperty($ClassName, $Property);
+		$phDoc = $propReflection->getDocComment();
+		$typeName = "";
+		if($phDoc != false)
+		{
+			$phDoc = str_replace("/** ", "", $phDoc);
+			$phDoc = str_replace(" */", "", $phDoc);
+
+			$phDocAnnots = explode("@", $phDoc);
+
+			foreach($phDocAnnots as $value)
+			{
+				$keyVal = explode(" ", $value);
+				if(count($keyVal) == 2)
+				{
+					if($keyVal[0] == "var")
+					{
+						$typeName = $keyVal[1];
+					}
+				}
+			}
+		}
+		return $typeName;
 	}
 
 

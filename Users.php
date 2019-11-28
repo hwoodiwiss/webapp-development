@@ -19,20 +19,15 @@ if(SafeGetValue($_SESSION, 'auth') == null || $_SESSION['auth'] != true)
 
 $user = SafeGetValue($_SESSION, 'User');
 
-if($user->AccessLevel != 'Admin')
+if($user->AccessLevelId != 'Admin')
 {
 	header('HTTP/1.0 401 Not Authorised', 401);
 }
 
-$db = new DB();
-$stmt = $db->prepare('SELECT * FROM Users');
+$ShowInactive = SafeGetValue($_GET, "Active");
 
-if(!$stmt->execute())
-{
-	die('An error occured: ' . $stmt->errorInfo()[2]);
-}
+$users = $Users->Select([], [Active => true]);
 
-$users = $stmt->fetchAll();
 $userCount = count($users);
 
 ?>
@@ -51,8 +46,8 @@ $userCount = count($users);
 		<?php
 			for($i = 0; $i < $userCount; $i++)
 			{
-				$curr = new User($users[$i]);
-				echo('<tr><td>'.$curr->Email.'</td><td>'.$curr->FirstName.'</td><td>'.$curr->LastName.'</td><td>'.$curr->AccessLevel.'</td><td><a class="btn btn-info" href="/User/Edit.php?Id='.$curr->Id.'">Edit</a></td></tr>');
+				$curr = $users[$i];
+				echo('<tr><td>'.$curr->Email.'</td><td>'.$curr->FirstName.'</td><td>'.$curr->LastName.'</td><td>'.$curr->AccessLevelId.'</td><td><a class="btn btn-info" href="/User/Edit.php?Id='.$curr->Id.'">Edit</a></td></tr>');
 			}
 		?>
 	</tbody>

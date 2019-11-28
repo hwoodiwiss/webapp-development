@@ -1,21 +1,17 @@
 <?php
 
 $loggedIn = false;
+$User = null;
+$isAdmin = false;
 $auth = SafeGetValue($_SESSION, 'auth');
 if ($auth != null && $auth == true) 
 {
-	$loggedIn = true;
+  $loggedIn = true;
+  $User = SafeGetValue($_SESSION, 'User');
+  $isAdmin = $User->AccessLevelId;
 }
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">CourseMan</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-    </ul>
-  </div>
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="/index.php">CourseMan</a>
 </nav>

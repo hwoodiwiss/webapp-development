@@ -50,11 +50,11 @@ class HtmlHelper
 	{
 		if($htmlAttributes != null && array_key_exists('type', $htmlAttributes))
 		{
-			echo '<input ' . $this->GetHtmlAttribStr($htmlAttributes) . '>' . $model . '</input>';
+			echo '<input ' . $this->GetHtmlAttribStr($htmlAttributes) . ' value="' . $model . '" />';
 		}
 		else
 		{
-			echo '<input type="'. $type .'" ' . $this->GetHtmlAttribStr($htmlAttributes) . '>' . $model . '</input>';
+			echo '<input type="'. $type .'" ' . $this->GetHtmlAttribStr($htmlAttributes) . ' value="' . $model . '" />';
 		}
 	}
 
@@ -98,6 +98,12 @@ class HtmlHelper
 		if($htmlAttributes == null) return "";
 
 		$htmlAttribStr = "";
+
+		if(!array_key_exists("name", $htmlAttributes) && array_key_exists("id", $htmlAttributes))
+		{
+			//Copies ID to name if name is empty
+			$htmlAttributes["name"] = $htmlAttributes["id"];
+		}
 
 		foreach($htmlAttributes as $name => $value)
 		{

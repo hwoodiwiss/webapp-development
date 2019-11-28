@@ -13,7 +13,7 @@ if(!$_SERVER['REQUEST_METHOD'] === 'POST')
 $email = $_POST['Email'];
 $password = $_POST['Password'];
 
-$db = new DB();
+$db = new Db();
 $stmt = $db->prepare('SELECT * FROM Users WHERE Email = :email');
 $stmt->bindParam(':email', $email, PDO::PARAM_STR);
 
