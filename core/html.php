@@ -46,7 +46,7 @@ class HtmlHelper
 		}
 	}
 
-	public function TextBox(string $model, array $htmlAttributes = null, $type = "text")
+	public function Input($model, array $htmlAttributes = null, $type = "text")
 	{
 		if($htmlAttributes != null && array_key_exists('type', $htmlAttributes))
 		{

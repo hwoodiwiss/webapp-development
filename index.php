@@ -1,26 +1,18 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 
 require_once './core/utils.php';
 require_once './Model/User.php';
 
-session_start();
+StartSession();
+RequireAuth();
 
-if(SafeGetValue($_SESSION, 'auth') !== null && $_SESSION['auth'] == true)
-{
-	$user = SafeGetValue($_SESSION, 'User');
-}
-else
-{
-	header('Location: /login.php');
-}
+include_once "./core/html.php";
 
-include_once "./core/html.php"
+HtmlHelper::$_Title = "CourseMan";
 ?>
 
 <div class="col-md">
-
+	<p>Hello World!</p>
 </div>
 
 <?php $HTML->Render() ?>

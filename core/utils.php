@@ -159,7 +159,7 @@
 
 	function RequireAuth()
 	{
-		if(!isset($_SESSION))
+		if(isset($_SESSION))
 		{
 			if(SafeGetValue($_SESSION, 'auth') == null || $_SESSION['auth'] != true)
 			{
@@ -174,6 +174,15 @@
 		}
 	}
 
+	function GetRequestMethod()
+	{
+		if(!array_key_exists("REQUEST_METHOD", $_SERVER))
+		{
+			return "";
+		}
+
+		return $_SERVER["REQUEST_METHOD"];
+	}
 
 class ResponseData extends ResponseMessage
 {

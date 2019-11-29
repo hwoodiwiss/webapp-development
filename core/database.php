@@ -73,7 +73,7 @@
 			$props = get_object_vars($this);
 			foreach($props as $key => $value)
 			{
-				$annotations = GetPropertyAnnotations($ClassName, $Prop);
+				$annotations = GetPropertyAnnotations($class, $key);
 				$type = SafeGetValue($annotations, "var");
 				if($type != null)
 				{
@@ -330,12 +330,8 @@
 			$columnVals = array();
 			foreach($objVals as $Var => $Val)
 			{
-				if($Val != null && $Var != "Id")
-				{
-					$columnVals[$Var] = $Val;
-				}
+				$columnVals[$Var] = $Val;
 			}
-
 			$this->Update($columnVals, [new DbCondition("Id", $object->Id)]);
 		}
 
@@ -343,22 +339,18 @@
 		{
 			$updateString = "UPDATE " . $this->TableName . " SET " 
 			. $this->BuildPreparedValuesString($ColumnVals) . $this->BuildConditionString($Conditions) . ";";
-
 			$db = new Db();
 			$stmt = $db->prepare($updateString);
 
 			$count = 0;
 			foreach($ColumnVals as $Column => $Val)
 			{
-				if($Val != null)
+				$paramStr = ":v" . $count;
+				if(!$stmt->bindValue($paramStr, $Val, $this->GetPdoParam($Val)))
 				{
-					$paramStr = ":v" . $count;
-					if(!$stmt->bindValue($paramStr, $Val, $this->GetPdoParam($Val)))
-					{
-						throw new Exception("Failed to bind parameter " . $paramStr . " Value: " . $Val);
-					}
-					$count++;
+					throw new Exception("Failed to bind parameter " . $paramStr . " Value: " . $Val);
 				}
+				$count++;
 			}
 
 			if($Conditions != [])
@@ -377,7 +369,6 @@
 					}
 				}
 			}
-
 			if(!$stmt->execute())
 			{
 				throw new Exception("An error occured updating the database. Error info: " . $stmt->errorInfo()[2]);
@@ -455,16 +446,14 @@
 				$count = 0;
 				foreach($Values as $Column => $Value)
 				{
-					if($Value != null)
+
+					if($count > 0)
 					{
-						if($count > 0)
-						{
-							$valuesString .= ", ";
-						}
-						$isInt = gettype($Value) == "integer";
-						$valuesString .= $Column . " = " . ":v" . $count;
-						$count++;
+						$valuesString .= ", ";
 					}
+
+					$valuesString .= $Column . " = :v" . $count;
+					$count++;
 				}
 			}
 

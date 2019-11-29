@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 
 require_once './core/utils.php';
 
-session_start();
+StartSession();
 if (SafeGetValue($_SESSION, 'auth') == null || $_SESSION['auth'] != true) {
 	header('Location: /login.php');
 	exit();

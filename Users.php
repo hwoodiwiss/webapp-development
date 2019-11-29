@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 
 require_once './Model/User.php';
 require_once './Model/UserAccessLevel.php';
@@ -33,8 +31,9 @@ $accessLevels = $UserAccessLevels->Select([]);
 $userCount = count($users);
 
 ?>
-
-<table class="table">
+<h3>Users</h3>
+<hr />
+<table class="table table-dark table-striped">
 	<thead>
 		<tr>
 			<th>Email</th>
@@ -42,16 +41,25 @@ $userCount = count($users);
 			<th>Lastname</th>
 			<th>Accesslevel</th>
 			<th></th>
+			<th></th>
 		</tr>
 	</thead>
-	<tbody>
-		<?php
-			for($i = 0; $i < $userCount; $i++)
-			{
-				$curr = $users[$i];
-				echo('<tr><td>'.$curr->Email.'</td><td>'.$curr->FirstName.'</td><td>'.$curr->LastName.'</td><td>'.$curr->AccessLevel->Name.'</td><td><a class="btn btn-info" href="/User/Edit.php?Id='.$curr->Id.'">Edit</a></td></tr>');
-			}
-		?>
+	<tbody id="UserTableBody">
+		<?php foreach($users as $curr): ?>
+			<tr data-toggle="collapse" data-target="#Details<?php echo $curr->Id ?>" role="button" aria-expanded="false" aria-controls="#Details<?php echo $curr->Id ?>" data-parent="#UserTableBody">
+				<td><?php echo $curr->Email ?></td>
+				<td><?php echo $curr->FirstName ?></td>
+				<td><?php echo $curr->LastName ?></td>
+				<td><?php echo $curr->AccessLevel->Name ?></td>
+				<td><a class="btn btn-info" href="/User/Edit.php?Id=<?php echo $curr->Id ?>">Edit</a></td>
+				<td><form action="/User/Delete.php" method="POST" onsubmit="return confirm('Are you sure you wish to delete this user?')"> <?php echo $HTML->Input($curr->Id, ["id" => "Id"], "hidden") ?> <button type="submit" class="btn btn-danger">Delete</button></form></td>
+			</tr>
+			<tr>
+				<td class="unpadded" colspan="7">
+					<div id="Details<?php echo $curr->Id ?>" class="collapse td-collapse">Moar Details</div>
+				</td>
+			</tr>
+		<?php endforeach ?>
 	</tbody>
 </table>
 

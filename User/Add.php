@@ -1,13 +1,10 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
 require_once '../Model/User.php';
 require_once '../Model/UserAccessLevel.php';
 require_once '../core/utils.php';
 require_once '../core/html.php';
 
-SessionStart();
+StartSession();
 RequireAuth();
 
 $user = SafeGetValue($_SESSION, 'User');
@@ -56,15 +53,15 @@ HtmlHelper::$_Title = 'Add User';
 <form action="/User/Add.php" method="POST">
 	<div class="row">
 		<label>Email</label>
-		<?php $HTML->TextBox("", ['id' => 'email', 'class' => 'form-control', 'type' => 'email']); ?>
+		<?php $HTML->Input("", ['id' => 'email', 'class' => 'form-control', 'type' => 'email']); ?>
 		<label>Password</label>
-		<?php $HTML->TextBox("", ['id' => 'password', 'class' => 'form-control', 'type' => 'password']); ?>
+		<?php $HTML->Input("", ['id' => 'password', 'class' => 'form-control', 'type' => 'password']); ?>
 		<label>FirstName</label>
-		<?php $HTML->TextBox("", ['id' => 'fname', 'class' => 'form-control']); ?>
+		<?php $HTML->Input("", ['id' => 'fname', 'class' => 'form-control']); ?>
 		<label>LastName</label>
-		<?php $HTML->TextBox("", ['id' => 'lname', 'class' => 'form-control']); ?>
+		<?php $HTML->Input("", ['id' => 'lname', 'class' => 'form-control']); ?>
 		<label>Job Title</label>
-		<?php $HTML->TextBox("", ['id' => 'jtitle', 'class' => 'form-control']); ?>
+		<?php $HTML->Input("", ['id' => 'jtitle', 'class' => 'form-control']); ?>
 		<label>Access Level</label>
 		<?php $HTML->DropDownList($accessLevels, ['id' => 'alevels', 'class' => 'form-control'], 'Id', 'Name'); ?>
 		<hr />
