@@ -184,6 +184,17 @@
 		return $_SERVER["REQUEST_METHOD"];
 	}
 
+	function ErrorResponse(int $ResponseCode)
+	{
+		http_response_code($ResponseCode);
+		$responsePage = __DIR__ . '\\..\\' . $ResponseCode . '.php';
+		if(file_exists($responsePage));
+		{
+			include_once $responsePage;
+		}
+		die();
+	}
+
 class ResponseData extends ResponseMessage
 {
 	public $data;

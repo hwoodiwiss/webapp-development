@@ -1,7 +1,5 @@
 <?php
 
-require_once 'utils.php';
-
 class HtmlHelper
 {
 	public static $_Title;
@@ -22,12 +20,12 @@ class HtmlHelper
 		{
 			//Make sure the provided text and value fields exisit for the object type
 			$propNames = get_object_vars($model[0]);
-			if(SafeGetValue($propNames, $value) == null && $value !== null)
+			if(!array_key_exists($value, $propNames) && $value !== null)
 			{
 				throw new InvalidArgumentException('$value argument ' . $value . ' does not correspond with a field in the provided model');
 			}
 
-			if(SafeGetValue($propNames, $text) == null)
+			if(!array_key_exists($text, $propNames))
 			{
 				throw new InvalidArgumentException('$text argument ' . $text . ' does not correspond with a field in the provided model');
 			}
@@ -116,4 +114,6 @@ class HtmlHelper
 
 $HTML = new HtmlHelper();
 
+//Push the helper to the globals array, in case, for some reason, it isn't accessible.
+$GLOBALS["HTML"] = $HTML;
 ?>

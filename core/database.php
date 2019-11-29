@@ -36,7 +36,14 @@
 					$this->$key = SafeGetValue($dbObject, $key);
 					if($type != null)
 					{
-						if(!settype($this->$key, $type)) throw new Exception("Invalid conversion from string to " . $type);
+						if(class_exists($type))
+						{
+							$this->$key = new $type($value);
+						}
+						else
+						{
+							if(!settype($this->$key, $type)) throw new Exception("Invalid conversion from string to " . $type);
+						}
 					}
 				}
 			}

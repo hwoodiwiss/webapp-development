@@ -33,9 +33,9 @@ if ($auth != null && $auth == true)
 				Admin
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="/Users.php">Users</a>
-				<a class="dropdown-item" href="/Courses.php">Courses</a>
-				<a class="dropdown-item" href="/Bookings.php">Bookings.php</a>
+				<a class="dropdown-item" href="/Admin/Users.php">Users</a>
+				<a class="dropdown-item" href="/Admin/Courses.php">Courses</a>
+				<a class="dropdown-item" href="/Admin/Bookings.php">Bookings</a>
 			</div>
 		</li>
 		<?php endif; ?>
