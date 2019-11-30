@@ -11,22 +11,40 @@ if(!$_SERVER['REQUEST_METHOD'] === 'GET')
 
 $location = SafeGetValue($_GET, "location");
 
+StartSession();
+if(SafeGetValue($_SESSION, "auth") == true)
+{
+	if($location != null)
+	{
+		header("Location: " . urldecode($location));
+	}
+	else
+	{
+		header("Location: /index.php");
+	}
+	exit();
+}
+
 $err = SafeGetValue($_GET, 'err');
 if($err !== null)
 {
-	if($err === 'e01')
-	{
-		echo('<div class="alert alert-danger" role="alert">Username or Password is Incorrect!<button type="button"
-		 class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-	}
+	
 }
 
 HtmlHelper::$_Title = "Login";
 
 ?>
 
+<?php if($err === 'e01'): ?>
+	<script>
+		CM.Alert("Username Or Password!", "The provided username or password was incorrect!", )
+	</script>
+<?php endif; ?>
+
 <div class=" login-container text-center">
-<form class="form-signin" action="auth.php" method="POST">
+
+<form class="form-signin async" action="auth.php" method="POST" onsuccess="if(data.success == true){window.location = data.data.Location} else {CM.Alert(data.data.Title, data.data.Content, data.data.Type);}">
+	<input type="hidden" name="location" value="<?php echo $location ?>">
 	<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 	<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 	<label for="inputEmail" class="sr-only">Email address</label>

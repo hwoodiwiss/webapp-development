@@ -15,10 +15,11 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/css/courseman.css" />
-	<script type="text/javascript" src="/js/coursemanjs"></script>
+	<script type="text/javascript" src="/js/courseman.js"></script>
 </head>
-<body>
+<body class="login-body">
 	<?php echo $viewData['Body'] ?>
+	<div id="MasterAlerts"></div>
 </body>
 
 </html>

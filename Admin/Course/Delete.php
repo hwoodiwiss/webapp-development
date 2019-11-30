@@ -22,13 +22,12 @@ if(!$User->AccessLevel->Name == "Admin")
 	die();
 }
 
-$UserId = ValidatePOSTValue("Id", true);
+$CourseId = ValidatePOSTValue("Id", true);
+$DeleteCourse = $Courses->Find($CourseId);
+$DeleteCourse->Active = false;
+$Courses->UpdateObj($DeleteCourse);
 
-$DeleteUser = $Users->Find($UserId);
-$DeleteUser->Active = false;
-$Users->UpdateObj($DeleteUser);
-
-header("Location: ../Users.php");
+header("Location: ../Courses.php");
 exit();
 
 ?>

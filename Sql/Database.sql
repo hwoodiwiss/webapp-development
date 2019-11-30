@@ -23,11 +23,11 @@ CREATE TABLE Users (
 CREATE TABLE Courses (
 	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
+    Description VARCHAR(255) NOT NULL,
     StartDate DATE NOT NULL,
     Duration INT NOT NULL,
     Capacity INT NOT NULL,
-    Active BIT NOT NULL DEFAULT 1,
-    Description VARCHAR(255) NOT NULL
+    Active BIT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE Bookings (

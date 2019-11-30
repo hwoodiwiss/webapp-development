@@ -27,6 +27,9 @@ if ($auth != null && $auth == true)
 		<li class="nav-item">
 			<a class="nav-link" href="/index.php">Home</a>
 		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/Courses.php">Courses</a>
+		</li>
 		<?php if($isAdmin): ?>
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,7 +38,6 @@ if ($auth != null && $auth == true)
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a class="dropdown-item" href="/Admin/Users.php">Users</a>
 				<a class="dropdown-item" href="/Admin/Courses.php">Courses</a>
-				<a class="dropdown-item" href="/Admin/Bookings.php">Bookings</a>
 			</div>
 		</li>
 		<?php endif; ?>

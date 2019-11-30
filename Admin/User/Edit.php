@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
 require_once '../../core/utils.php';
 require_once '../../Model/User.php';
 require_once '../../Model/UserAccessLevel.php';
@@ -79,19 +76,19 @@ HtmlHelper::$_Title = 'Edit User';
 		<input name="Id" type="hidden" value="<?php echo $gUser->Id ?>" />
 		<div class="form-group col-12">
 			<label>Email</label>
-			<?php $HTML->Input($gUser->Email, ['id' => 'Email', 'class' => 'form-control', 'type' => 'email']); ?>
+			<?php $HTML->Input($gUser->Email, ['id' => 'Email', 'class' => 'form-control', 'type' => 'email', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Firstname</label>
-			<?php $HTML->Input($gUser->FirstName, ['id' => 'FirstName', 'class' => 'form-control']); ?>
+			<?php $HTML->Input($gUser->FirstName, ['id' => 'FirstName', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Lastname</label>
-			<?php $HTML->Input($gUser->LastName, ['id' => 'LastName', 'class' => 'form-control']); ?>
+			<?php $HTML->Input($gUser->LastName, ['id' => 'LastName', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Job Title</label>
-			<?php $HTML->Input($gUser->JobTitle, ['id' => 'JobTitle', 'class' => 'form-control']); ?>
+			<?php $HTML->Input($gUser->JobTitle, ['id' => 'JobTitle', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Access Level</label>

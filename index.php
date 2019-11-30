@@ -11,8 +11,11 @@ include_once "./core/html.php";
 HtmlHelper::$_Title = "CourseMan";
 ?>
 
-<div class="col-md">
+<div class="col-6">
 	<p>Hello World!</p>
+</div>
+<div class="col-6">
+
 </div>
 
 <?php $HTML->Render() ?>

@@ -7,7 +7,7 @@ class Course extends DbData
 	/** @var integer */
 	public $Id;
 	public $Name;
-	/** @var DateTime */
+	public $Description;
 	public $StartDate;
 	public $Duration;
 	/** @var integer */

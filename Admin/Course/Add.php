@@ -18,12 +18,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
 	$Title = ValidatePOSTValue('Title');
 	$StartDate = ValidatePOSTValue('StartDate');
+	$Description = ValidatePOSTValue('Description');
 	$Duration = ValidatePOSTValue('Duration');
 	$Capacity = ValidatePOSTValue('Capacity');
 
 	$NewCourse = new Course();
 	$NewCourse->Name = $Title;
 	$NewCourse->StartDate = $StartDate;
+	$NewCourse->Description = $Description;
 	$NewCourse->Duration = $Duration;
 	$NewCourse->Capacity = $Capacity;
 	$NewCourse->Active = true;
@@ -40,19 +42,23 @@ HtmlHelper::$_Title = 'Add Course';
 <hr />
 <form action="./Add.php" method="POST">
 <div class="form-row">
-		<div class="form-group col-12">
+		<div class="form-group col-6">
 			<label>Title</label>
-			<?php $HTML->Input("", ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control']); ?>
+			<?php $HTML->Input("", ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
-		<div class="form-group col-4">
+		<div class="form-group col-6">
 			<label>Start Date</label>
 			<?php $HTML->Input("", ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control'], 'date'); ?>
 		</div>
-		<div class="form-group col-md-4">
+		<div class="form-group col-12">
+			<label>Description</label>
+			<?php $HTML->Input("", ['id' => 'Description', 'placeholder' => 'Course Description', 'class' => 'form-control', 'maxlength' => 255]); ?>
+		</div>
+		<div class="form-group col-md-6">
 			<label>Duration</label>
 			<?php $HTML->Input("", ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control'], 'number'); ?>
 		</div>
-		<div class="form-group col-md-4">
+		<div class="form-group col-md-6">
 			<label>Capacity</label>
 			<?php $HTML->Input("", ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control'], 'number'); ?>
 		</div>

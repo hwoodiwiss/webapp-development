@@ -1,10 +1,10 @@
 <?php
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 
 require_once '../../core/utils.php';
 require_once '../../Model/User.php';
-require_once '../../Model/UserAccessLevel.php';
+require_once '../../Model/Course.php';
+require_once '../../Model/Booking.php';
 require_once '../../core/html.php';
 
 StartSession();
@@ -19,88 +19,87 @@ if ($user->AccessLevel->Name != 'Admin')
 	exit();
 }
 
-$gUser = null;
-$accessLevels = null;
+$gCourse = null;
+$NumBookings = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') 
 {
-	$uid = SafeGetValue($_GET, 'Id');
-	if ($uid === null) 
+	$Id = SafeGetValue($_GET, 'Id');
+	if ($Id === null) 
 	{
 		ErrorResponse(404);
 		exit();
 	}
 	
-	$gUser = $Users->Find($uid);
-	if ($gUser === null) 
+	$gCourse = $Courses->Find($Id);
+	if ($gCourse === null) 
 	{
 		ErrorResponse(404);
 		exit();
 	}
 
-	$accessLevels = $UserAccessLevels->Select([]);
+	$CourseBookings = $Bookings->Select(["Id"], [new DbCondition("CourseId", $gCourse->Id)]);
+	$NumBookings = count($CourseBookings);
 
 } 
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 {
-	$Id = ValidatePOSTValue('Id');
-	$Email = ValidatePOSTValue('Email');
-	$FirstName = ValidatePOSTValue('FirstName');
-	$LastName = ValidatePOSTValue('LastName');
-	$JobTitle = ValidatePOSTValue('JobTitle');
-	$AccessLevel = ValidatePOSTValue('AccessLevel');
+	$Id = ValidatePOSTValue('Id', true);
+	$Title = ValidatePOSTValue('Title');
+	$StartDate = ValidatePOSTValue('StartDate');
+	$Description = ValidatePOSTValue('Description');
+	$Duration = ValidatePOSTValue('Duration');
+	$Capacity = ValidatePOSTValue('Capacity');
 
-	$updateUser = $Users->Find($Id);
+	$updateCourse = $Courses->Find($Id);
 
-	if($updateUser != null)
+	if($updateCourse != null)
 	{
-		$updateUser->Email = $Email;
-		$updateUser->FirstName = $FirstName;
-		$updateUser->LastName = $LastName;;
-		$updateUser->AccessLevelId = $AccessLevel;
-		$updateUser->JobTitle = $JobTitle;
+		$updateCourse->Name = $Title;
+		$updateCourse->StartDate = $StartDate;
+		$updateCourse->Description = $Description;
+		$updateCourse->Duration = $Duration;
+		$updateCourse->Capacity = $Capacity;
 
-		$Users->UpdateObj($updateUser);
+		$Courses->UpdateObj($updateCourse);
 	}
 
-	header('Location: ../Users.php');
+	header('Location: ../Courses.php');
 	exit();
 
 }
 
-HtmlHelper::$_Title = 'Edit User';
+HtmlHelper::$_Title = 'Edit Course';
 
 ?>
 
-<h3>Edit User: <?php echo $gUser->LastName ?>, <?php echo $gUser->FirstName ?></h3>
+<h3>Edit Course</h3>
 <hr />
-
 <form action="./Edit.php" method="POST">
 	<div class="form-row">
-		<input name="Id" type="hidden" value="<?php echo $gUser->Id ?>" />
+		<input type="hidden" name="Id" value="<?php echo $gCourse->Id ?>" >
+		<div class="form-group col-6">
+			<label>Title</label>
+			<?php $HTML->Input($gCourse->Name, ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control', 'maxlength' => 255]); ?>
+		</div>
+		<div class="form-group col-6">
+			<label>Start Date</label>
+			<?php $HTML->Input($gCourse->StartDate, ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control'], 'date'); ?>
+		</div>
 		<div class="form-group col-12">
-			<label>Email</label>
-			<?php $HTML->Input($gUser->Email, ['id' => 'Email', 'class' => 'form-control', 'type' => 'email']); ?>
+			<label>Description</label>
+			<?php $HTML->Input($gCourse->Description, ['id' => 'Description', 'placeholder' => 'Course Description', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-md-6">
-			<label>Firstname</label>
-			<?php $HTML->Input($gUser->FirstName, ['id' => 'FirstName', 'class' => 'form-control']); ?>
+			<label>Duration</label>
+			<?php $HTML->Input($gCourse->Duration, ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control'], 'number'); ?>
 		</div>
 		<div class="form-group col-md-6">
-			<label>Lastname</label>
-			<?php $HTML->Input($gUser->LastName, ['id' => 'LastName', 'class' => 'form-control']); ?>
-		</div>
-		<div class="form-group col-12">
-			<label>Job Title</label>
-			<?php $HTML->Input($gUser->JobTitle, ['id' => 'JobTitle', 'class' => 'form-control']); ?>
-		</div>
-		<div class="form-group col-12">
-			<label>Access Level</label>
-			<?php $HTML->DropDownList($accessLevels, ['id' => 'AccessLevel', 'class' => 'form-control'], 'Id', 'Name', $gUser->AccessLevelId); ?>
+			<label>Capacity</label>
+			<?php $HTML->Input($gCourse->Capacity, ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control', 'min' => $NumBookings], 'number'); ?>
 		</div>
 		<hr />
 	</div>
 	<button class="btn btn-success" type="submit">Update</button>
-	<a class="btn btn-warning" href="../Users.php">Cancel</a>
+	<a class="btn btn-warning" href="../Courses.php">Cancel</a>
 </form>
-
 <?php $HTML->Render() ?>

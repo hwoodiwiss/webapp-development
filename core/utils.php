@@ -76,8 +76,7 @@
 	{
 		if(empty($name) && $required)
 		{
-			http_response_code(400);
-			$response = new ResponseMessage(false, 'Invalid data provided');
+			ErrorResponse(400);
 			die($response->json());
 		}
 
@@ -85,8 +84,7 @@
 		{
 			if($required)
 			{
-				http_response_code(400);
-				$response = new ResponseMessage(false, 'Invalid data provided: ' . $name);
+				ErrorResponse(400);
 				die($response->json());
 			}
 			else
@@ -193,6 +191,11 @@
 			include_once $responsePage;
 		}
 		die();
+	}
+
+	function IsAjax()
+	{
+		return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 	}
 
 class ResponseData extends ResponseMessage

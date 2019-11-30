@@ -12,6 +12,18 @@
 	padding-top: 40px;
 }
 
+#MasterAlerts{
+	position: fixed;
+	bottom: 1em;
+	left: 2.5vw;
+	width: 95vw;
+}
+
+.login-body
+{
+	background-color: dimgray;
+}
+
 .login-container 
 {
 	display: -ms-flexbox;

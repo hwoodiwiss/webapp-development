@@ -17,6 +17,7 @@ class Booking extends DbData
 	 * 	@fkey-table Courses
 	 */
 	public $CourseId;
+	public $Timestamp;
 }
 
 $Bookings = new DbHelper("Booking");

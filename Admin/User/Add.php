@@ -55,7 +55,7 @@ HtmlHelper::$_Title = 'Add User';
 <div class="form-row">
 		<div class="form-group col-6">
 			<label>Email</label>
-			<?php $HTML->Input("", ['id' => 'Email', 'class' => 'form-control', 'type' => 'email']); ?>
+			<?php $HTML->Input("", ['id' => 'Email', 'class' => 'form-control', 'type' => 'email', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-6">
 			<label>Password</label>
@@ -63,15 +63,15 @@ HtmlHelper::$_Title = 'Add User';
 		</div>
 		<div class="form-group col-md-6">
 			<label>Firstname</label>
-			<?php $HTML->Input("", ['id' => 'FirstName', 'class' => 'form-control']); ?>
+			<?php $HTML->Input("", ['id' => 'FirstName', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Lastname</label>
-			<?php $HTML->Input("", ['id' => 'LastName', 'class' => 'form-control']); ?>
+			<?php $HTML->Input("", ['id' => 'LastName', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Job Title</label>
-			<?php $HTML->Input("", ['id' => 'JobTitle', 'class' => 'form-control']); ?>
+			<?php $HTML->Input("", ['id' => 'JobTitle', 'class' => 'form-control', 'maxlength' => 255]); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Access Level</label>
