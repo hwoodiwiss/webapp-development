@@ -1,5 +1,5 @@
 <?php
-	require_once __DIR__ . '\\..\\core\\html.php';
+	require_once __DIR__ . '/../core/html.php';
 	$viewData = HtmlHelper::$_ViewData;
 ?>
 

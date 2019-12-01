@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
 require_once './Model/Course.php';
 require_once './Model/Booking.php';
 require_once './core/utils.php';

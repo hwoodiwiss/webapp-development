@@ -8,7 +8,7 @@
 		//Very naiive implemetation, will probably opt for proper ctx management in later version
 		public static $Cache = array();
 
-		public function __construct($file = __DIR__ . "\\..\\settings.ini", string $section = "database")
+		public function __construct($file = __DIR__ . "/../settings.ini", string $section = "database")
 		{
 			if(!$settings = parse_ini_file($file, TRUE))
 				throw new exception("Cannot open settings file " . $file);

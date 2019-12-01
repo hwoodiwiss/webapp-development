@@ -173,7 +173,7 @@
 	function ErrorResponse(int $ResponseCode)
 	{
 		http_response_code($ResponseCode);
-		$responsePage = __DIR__ . '\\..\\' . $ResponseCode . '.php';
+		$responsePage = __DIR__ . '/../' . $ResponseCode . '.php';
 		if(file_exists($responsePage) && !IsAjax());
 		{
 			include_once $responsePage;

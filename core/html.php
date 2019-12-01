@@ -57,7 +57,7 @@ class HtmlHelper
 	}
 
 	//Renders the buffered output, configurable as to whether to use layout file, and which file to use.
-	public function Render(bool $useLayout = true, string $layoutFile = "_layout.php", string $layoutDir = __DIR__ . "\\..\\Views\\")
+	public function Render(bool $useLayout = true, string $layoutFile = "_layout.php", string $layoutDir = __DIR__ . "/../Views/")
 	{
 		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
 		{

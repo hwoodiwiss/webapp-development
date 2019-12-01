@@ -1,5 +1,4 @@
 <?php
-
 require_once './core/utils.php';
 require_once './core/database.php';
 require_once './Model/User.php';
