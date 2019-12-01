@@ -105,7 +105,14 @@ class HtmlHelper
 
 		foreach($htmlAttributes as $name => $value)
 		{
-			$htmlAttribStr = $htmlAttribStr . $name . '="' . $value . '" '; 
+			if($value != "")
+			{
+				$htmlAttribStr .= $name . '="' . $value . '" '; 
+			}
+			else
+			{
+				$htmlAttribStr .= $name . " ";
+			}
 		}
 
 		return $htmlAttribStr;

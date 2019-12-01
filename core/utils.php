@@ -20,24 +20,26 @@
 
 	function GenerateRandomString($length = 10) : string
 	{
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
+		$Chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$NumChars = strlen($Chars);
 		$randomString = '';
 		for ($i = 0; $i < $length; $i++)
 		{
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
+			$randomString .= $Chars[rand(0, $NumChars - 1)];
 		}
 		
 		return $randomString;
 	}
 
+	//Gets the current date and time in UTC
 	function CurrentDateTime() : string
 	{
-		$dt = new DateTime('now', new DateTimezone('Europe/London'));
+		$dt = new DateTime('now', new DateTimezone('UTC'));
 		$currTime = $dt->format('Y-m-d H:i:s.u');
 		return $currTime;
 	}
 
+	//Safeley gets a value from an array if it exists, or null if it doesn't
 	function SafeGetValue(array $dataArray, string $valName)
 	{
 		if(array_key_exists($valName, $dataArray))
@@ -51,27 +53,7 @@
 
 	}
 
-	//"Liberated" from a blog post somewhere with very minor changes
-	function CreateGUID() : string
-	{
-		if (function_exists('com_create_guid'))
-		{
-			return com_create_guid();
-		}
-		else
-		{
-			mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-			$charid = strtoupper(md5(uniqid(rand(), true)));
-			$hyphen = chr(45);// "-"
-			$uuid = substr($charid, 0, 8).$hyphen
-				.substr($charid, 8, 4).$hyphen
-				.substr($charid,12, 4).$hyphen
-				.substr($charid,16, 4).$hyphen
-				.substr($charid,20,12);
-			return $uuid;
-		}
-	}
-
+	//Safely gets a value from $_POST, can be made to respond with err 400
 	function ValidatePOSTValue(string $name, bool $required = false)
 	{
 		if(empty($name) && $required)
@@ -96,6 +78,7 @@
 		return $_POST[$name];
 	}
 
+	//Gets an assoc array of annotations on a class property, parsed from documentation comments
 	function GetPropertyAnnotations(string $ClassName, string $Property) : array
 	{
 		$propReflection = new ReflectionProperty($ClassName, $Property);
@@ -121,6 +104,7 @@
 		return $Annotations;
 	}
 
+	//Returns a collection of items from the passed in collection that meet the requirements of the predicate
 	function Where(array $Collection, $Predicate)
 	{
 		$output = array();
@@ -136,6 +120,7 @@
 		return $output;
 	}
 
+	//Returns the first item from the passed in collection that meet the requirements of the predicate
 	function Find(array $Collection, $Predicate)
 	{
 		foreach($Collection as $Value)
@@ -155,6 +140,7 @@
 		}
 	}
 
+	//Checks if the user is authenticated, and if not, redirects to the login page
 	function RequireAuth()
 	{
 		if(isset($_SESSION))
@@ -172,6 +158,7 @@
 		}
 	}
 
+	//Gets the method of the current request
 	function GetRequestMethod()
 	{
 		if(!array_key_exists("REQUEST_METHOD", $_SERVER))
@@ -182,17 +169,19 @@
 		return $_SERVER["REQUEST_METHOD"];
 	}
 
+	//Sets the response code, and if available, outputs a custom Error page
 	function ErrorResponse(int $ResponseCode)
 	{
 		http_response_code($ResponseCode);
 		$responsePage = __DIR__ . '\\..\\' . $ResponseCode . '.php';
-		if(file_exists($responsePage));
+		if(file_exists($responsePage) && !IsAjax());
 		{
 			include_once $responsePage;
 		}
 		die();
 	}
 
+	//Returns true if the current request was made asynchronously
 	function IsAjax()
 	{
 		return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
@@ -207,6 +196,11 @@ class ResponseData extends ResponseMessage
 		$this->success = $success;
 		$this->message = $message;
 		$this->data = $data;
+	}
+
+	public function __toString()
+	{
+		return $this->json();
 	}
 
 	public function json()

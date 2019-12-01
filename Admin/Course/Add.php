@@ -35,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
 	header('Location: ../Courses.php');
 }
 
-HtmlHelper::$_Title = 'Add Course';
+HtmlHelper::$_Title = 'Admin: Add Course';
 
 ?>
 <h3>New Course</h3>
@@ -44,23 +44,23 @@ HtmlHelper::$_Title = 'Add Course';
 <div class="form-row">
 		<div class="form-group col-6">
 			<label>Title</label>
-			<?php $HTML->Input("", ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input("", ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-6">
 			<label>Start Date</label>
-			<?php $HTML->Input("", ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control'], 'date'); ?>
+			<?php $HTML->Input("", ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control', "required" => ""], 'date'); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Description</label>
-			<?php $HTML->Input("", ['id' => 'Description', 'placeholder' => 'Course Description', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input("", ['id' => 'Description', 'placeholder' => 'Course Description', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Duration</label>
-			<?php $HTML->Input("", ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control'], 'number'); ?>
+			<?php $HTML->Input("", ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control', "required" => ""], 'number'); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Capacity</label>
-			<?php $HTML->Input("", ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control'], 'number'); ?>
+			<?php $HTML->Input("", ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control', "required" => ""], 'number'); ?>
 		</div>
 		<hr />
 	</div>

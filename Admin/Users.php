@@ -4,7 +4,7 @@ require_once '../Model/User.php';
 require_once '../Model/UserAccessLevel.php';
 require_once '../core/html.php';
 
-HtmlHelper::$_Title = 'Users';
+HtmlHelper::$_Title = 'Admin: Users';
 
 StartSession();
 RequireAuth();
@@ -24,12 +24,13 @@ $userCount = count($users);
 ?>
 <h3>Users</h3>
 <hr />
-<table class="table table-dark table-striped">
+<table class="table table-light table-striped">
 	<thead>
 		<tr>
 			<th>Email</th>
 			<th>Firstname</th>
 			<th>Lastname</th>
+			<th>Job Title</th>
 			<th>Accesslevel</th>
 			<th></th>
 			<th></th>
@@ -37,17 +38,17 @@ $userCount = count($users);
 	</thead>
 	<tbody id="UserTableBody">
 		<?php foreach($users as $curr): ?>
-			<tr data-toggle="collapse" data-target="#Details<?php echo $curr->Id ?>" role="button" aria-expanded="false" aria-controls="#Details<?php echo $curr->Id ?>" data-parent="#UserTableBody">
-				<td><?php echo $curr->Email ?></td>
-				<td><?php echo $curr->FirstName ?></td>
-				<td><?php echo $curr->LastName ?></td>
+			<tr>
+				<td><?php echo htmlspecialchars($curr->Email) ?></td>
+				<td><?php echo htmlspecialchars($curr->FirstName) ?></td>
+				<td><?php echo htmlspecialchars($curr->LastName) ?></td>
+				<td><?php echo htmlspecialchars($curr->JobTitle) ?></td>
 				<td><?php echo $curr->AccessLevel->Name ?></td>
 				<td><a class="btn btn-info" href="./User/Edit.php?Id=<?php echo $curr->Id ?>">Edit</a></td>
-				<td><form action="./User/Delete.php" method="POST" onsubmit="return confirm('Are you sure you wish to delete this user?')"> <?php echo $HTML->Input($curr->Id, ["id" => "Id"], "hidden") ?> <button type="submit" class="btn btn-danger">Delete</button></form></td>
-			</tr>
-			<tr>
-				<td class="unpadded" colspan="7">
-					<div id="Details<?php echo $curr->Id ?>" class="collapse td-collapse">Moar Details</div>
+				<td>
+					<?php if($curr->Id != $user->Id): ?>
+					<form action="./User/Delete.php" method="POST" onsubmit="return confirm('Are you sure you wish to delete this user?')"> <?php echo $HTML->Input($curr->Id, ["id" => "Id"], "hidden") ?> <button type="submit" class="btn btn-danger">Delete</button></form>
+					<?php endif; ?>
 				</td>
 			</tr>
 		<?php endforeach ?>

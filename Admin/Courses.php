@@ -1,13 +1,10 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
 require_once '../Model/Course.php';
 require_once '../Model/Booking.php';
 require_once '../core/utils.php';
 require_once '../core/html.php';
 
-HtmlHelper::$_Title = 'Courses';
+HtmlHelper::$_Title = 'Admin: Courses';
 
 StartSession();
 RequireAuth();
@@ -25,9 +22,9 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("Active", true)]);
 
 ?>
 <h3>Courses</h3>
+<p>Click a row to see it's bookings</p>
 <hr />
-<div class="col-12">
-<table class="table table-dark table-striped">
+<table class="table table-light table-striped">
 	<thead>
 		<tr>
 			<th>Title</th>
@@ -48,9 +45,9 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("Active", true)]);
 				$CurrPercentage = ($NumBookings / $CurrCourse->Capacity) * 100;
 			?>
 			<tr data-toggle="collapse" data-target="#Details<?php echo $CurrCourse->Id ?>" role="button" aria-expanded="false" aria-controls="#Details<?php echo $CurrCourse->Id ?>" data-parent="#CourseTableBody">
-				<td><?php echo $CurrCourse->Name ?></td>
-				<td><?php echo (new DateTime($CurrCourse->StartDate))->format("d/m/yy") ?></td>
-				<td><?php echo $CurrCourse->Description ?></td>
+				<td><?php echo htmlspecialchars($CurrCourse->Name) ?></td>
+				<td><?php echo (new DateTime($CurrCourse->StartDate))->format("d/m/Y") ?></td>
+				<td><?php echo htmlspecialchars($CurrCourse->Description) ?></td>
 				<td><?php echo $CurrCourse->Duration ?> Days</td>
 				<td><?php echo $CurrCourse->Capacity ?></td>
 				<td>
@@ -59,11 +56,13 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("Active", true)]);
 					</div>
 				</td>
 				<td><a class="btn btn-info" href="./Course/Edit.php?Id=<?php echo $CurrCourse->Id ?>">Edit</a></td>
-				<td><form action="./Course/Delete.php" method="POST" onsubmit="return confirm('Are you sure you wish to delete this user?')"> <?php echo $HTML->Input($CurrCourse->Id, ["id" => "Id"], "hidden") ?> <button type="submit" class="btn btn-danger">Delete</button></form></td>
+				<td><form action="./Course/Delete.php" method="POST" onsubmit="return confirm('Are you sure you wish to delete this course?')"> <?php echo $HTML->Input($CurrCourse->Id, ["id" => "Id"], "hidden") ?> <button type="submit" class="btn btn-danger">Delete</button></form></td>
 			</tr>
 			<tr>
 				<td class="unpadded" colspan="7">
-					<div id="Details<?php echo $CurrCourse->Id ?>" class="collapse td-collapse"><?php echo $CurrCourse->Description ?></div>
+					<div id="Details<?php echo $CurrCourse->Id ?>" class="collapse td-collapse async-panel" data-target="./Course/CourseBookings.php" data-id='{"CourseId":<?php echo $CurrCourse->Id ?>}'>
+
+					</div>
 				</td>
 			</tr>
 		<?php endforeach ?>
@@ -72,7 +71,6 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("Active", true)]);
 <div>
 	<a class="btn btn-success" href="./Course/Add.php">Add</a>
 </div>
-		</div>
 
 
 

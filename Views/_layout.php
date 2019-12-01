@@ -17,12 +17,14 @@
 	<!-- link rel="stylesheet" type="text/css" href="/css/datatables.min.css" /-->
 	<!-- script type="text/javascript" src="/js/datatables.min.js"></script -->
 	<link rel="stylesheet" type="text/css" href="/css/courseman.css" />
+	<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="/js/courseman.js"></script>
 </head>
 	<body class="bg-secondary text-light">
 		<?php include 'navbar.php' ?>
 		<div class="container">
 			<?php echo $viewData['Body'] ?>
+			<div id="MasterAlerts"></div>
 		</div>
 	</body>
 </html>

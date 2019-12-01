@@ -68,7 +68,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
 }
 
-HtmlHelper::$_Title = 'Edit Course';
+HtmlHelper::$_Title = 'Admin: Edit Course';
 
 ?>
 
@@ -79,23 +79,23 @@ HtmlHelper::$_Title = 'Edit Course';
 		<input type="hidden" name="Id" value="<?php echo $gCourse->Id ?>" >
 		<div class="form-group col-6">
 			<label>Title</label>
-			<?php $HTML->Input($gCourse->Name, ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input($gCourse->Name, ['id' => 'Title', 'placeholder' => 'Course Title', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-6">
 			<label>Start Date</label>
-			<?php $HTML->Input($gCourse->StartDate, ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control'], 'date'); ?>
+			<?php $HTML->Input($gCourse->StartDate, ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control', "required" => ""], 'date'); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Description</label>
-			<?php $HTML->Input($gCourse->Description, ['id' => 'Description', 'placeholder' => 'Course Description', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input($gCourse->Description, ['id' => 'Description', 'placeholder' => 'Course Description', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Duration</label>
-			<?php $HTML->Input($gCourse->Duration, ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control'], 'number'); ?>
+			<?php $HTML->Input($gCourse->Duration, ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control', "required" => ""], 'number'); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Capacity</label>
-			<?php $HTML->Input($gCourse->Capacity, ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control', 'min' => $NumBookings], 'number'); ?>
+			<?php $HTML->Input($gCourse->Capacity, ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control', 'min' => $NumBookings, "required" => ""], 'number'); ?>
 		</div>
 		<hr />
 	</div>

@@ -1,3 +1,4 @@
+//CourseMan app object that contains CourseMan functions
 CM = {};
 
 CM.Alert = function(Heading, Content, Type)
@@ -12,22 +13,58 @@ CM.Alert = function(Heading, Content, Type)
 	}
 }
 
-$(function(){
+CM.ReloadAsyncPanel = function(Id, Target, Data)
+{
+	if($('#' + Id).length > 0)
+	{
 
-	$('collapse-trigger').click(function(){
+		$.get(Target, Data)
+		.done(function(data)
+		{
+			$('#' + Id).empty();
+			$('#' + Id).append(data);
+			ApplyHandlers('#' + Id);
+		});
+	}
+}
+
+function ApplyHandlers(scope)
+{
+
+	$(scope).find('collapse-trigger').click(function(){
 		var target = $(this).data('target');
 		$(target).collapse('toggle');
 	});
 
-	$('form.async').data('prevent', true);
+	$(scope).find('div.async-panel').each(function(index){
+		var curr = $(this);
+		CM.ReloadAsyncPanel(curr.attr('id'), curr.data('target'), curr.data('id'));
+	});
+	
 
-	$('form.async').submit(function(e){
+	$(scope).find('form').not('.no-validate').validate();
+
+	$(scope).find('form.async').data('prevent', true);
+
+	$(scope).find('form.async').submit(function(e){
 		var DoPrevent = $('form.async').data('prevent');
 		var CurrForm = $(this)
+		var Confirm = CurrForm.data('confirm');
+		if(Confirm != undefined)
+		{
+			var isConfirmed = confirm(Confirm);
+			if(!isConfirmed)
+			{
+				e.preventDefault();
+				return;
+			}
+		}
 		var Method = CurrForm.attr('method');
 		var Endpoint = CurrForm.attr('action');
 		var OnSuccessStr = CurrForm.attr('onsuccess');
-		var OnSuccess = new Function('data', OnSuccessStr);
+		var OnFailStr = CurrForm.attr('onfail');
+		var OnSuccess = new Function(['data', 'form'], OnSuccessStr);
+		var OnFail = new Function(['data', 'form'], OnFailStr);
 		var FormData = CurrForm.serialize();
 		var AjaxOptions = {
 			url: Endpoint,
@@ -36,10 +73,20 @@ $(function(){
 		};
 		$.ajax(AjaxOptions)
 		.done(function(data, textStatus, jqXHR){
-			if(typeof OnSuccess === 'function')
+			var jsData = $.parseJSON(data);
+			if(jsData.success == true)
 			{
-				var jsData = $.parseJSON(data);
-				OnSuccess(jsData);
+				if(typeof OnSuccess === 'function')
+				{
+					OnSuccess(jsData.data, CurrForm);
+				}
+			}
+			else
+			{
+				if(typeof OnFail === 'function')
+				{
+					OnFail(jsData.data);
+				}
 			}
 		})
 		.fail(function( jqXHR, textStatus, errorThrown)
@@ -48,15 +95,27 @@ $(function(){
 			CurrForm.data('prevent', false);
 			CurrForm.submit();
 		});
-
 		if(DoPrevent) e.preventDefault();
+
 	});
 
-	$('tr[data-toggle="collapse"] > td > button').click(function(e){
+	$(scope).find('tr[data-toggle="collapse"] > td > button').click(function(e){
 		e.stopPropagation();
 	});
 	
-	$('tr[data-toggle="collapse"] > td > a').click(function(e){
+	$(scope).find('tr[data-toggle="collapse"] > td > a').click(function(e){
     	e.stopPropagation();
 	});
+
+};
+
+function ReloadContainingPanel(jqThis)
+{
+	var curr = jqThis.parents('div.async-panel');
+
+	CM.ReloadAsyncPanel(curr.attr('id'), curr.data('target'), curr.data('id'));
+}
+
+$(document).ready(function(){
+	ApplyHandlers('body');
 });

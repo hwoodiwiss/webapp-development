@@ -1,8 +1,4 @@
 <?php
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
 require_once '../../core/utils.php';
 require_once '../../Model/User.php';
 require_once '../../Model/Booking.php';
@@ -26,19 +22,35 @@ $Booking = $Bookings->Find($BookingId);
 
 if(!$User->AccessLevel->Name == "Admin" || $Booking->User->Id != $User->Id)
 {
-	ErrorResponse(401);
-	die();
+	if(IsAjax())
+	{
+		echo new ResponseData(false, "", ["Heading" => "Booking Not Deleted!", "Content" => "Something went wrong, so the booking was not deleted!", "Type" => "danger"]);
+		exit();
+	}
+	else
+	{
+		ErrorResponse(401);
+		die();
+	}
 }
 
 $Bookings->Delete($Booking->Id);
 
-if($Location != null)
+if(IsAjax())
 {
-	header("Location: " . urldecode($Location));
+	echo new ResponseData(true, "", ["Heading" => "Booking Deleted!", "Content" => "Booking deleted successfully", "Type" => "success"]);
+	exit();
 }
 else
 {
-	header("Location: /index.php");
+	if($Location != null)
+	{
+		header("Location: " . urldecode($Location));
+	}
+	else
+	{
+		header("Location: /index.php");
+	}
 }
 exit();
 

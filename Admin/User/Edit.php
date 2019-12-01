@@ -64,11 +64,11 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
 }
 
-HtmlHelper::$_Title = 'Edit User';
+HtmlHelper::$_Title = 'Admin: Edit User';
 
 ?>
 
-<h3>Edit User: <?php echo $gUser->LastName ?>, <?php echo $gUser->FirstName ?></h3>
+<h3>Edit User: <?php echo htmlspecialchars($gUser->LastName) ?>, <?php echo htmlspecialchars($gUser->FirstName) ?></h3>
 <hr />
 
 <form action="./Edit.php" method="POST">
@@ -76,23 +76,23 @@ HtmlHelper::$_Title = 'Edit User';
 		<input name="Id" type="hidden" value="<?php echo $gUser->Id ?>" />
 		<div class="form-group col-12">
 			<label>Email</label>
-			<?php $HTML->Input($gUser->Email, ['id' => 'Email', 'class' => 'form-control', 'type' => 'email', 'maxlength' => 255]); ?>
+			<?php $HTML->Input($gUser->Email, ['id' => 'Email', 'class' => 'form-control', 'type' => 'email', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Firstname</label>
-			<?php $HTML->Input($gUser->FirstName, ['id' => 'FirstName', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input($gUser->FirstName, ['id' => 'FirstName', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Lastname</label>
-			<?php $HTML->Input($gUser->LastName, ['id' => 'LastName', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input($gUser->LastName, ['id' => 'LastName', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Job Title</label>
-			<?php $HTML->Input($gUser->JobTitle, ['id' => 'JobTitle', 'class' => 'form-control', 'maxlength' => 255]); ?>
+			<?php $HTML->Input($gUser->JobTitle, ['id' => 'JobTitle', 'class' => 'form-control', 'maxlength' => 255, "required" => ""]); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Access Level</label>
-			<?php $HTML->DropDownList($accessLevels, ['id' => 'AccessLevel', 'class' => 'form-control'], 'Id', 'Name', $gUser->AccessLevelId); ?>
+			<?php $HTML->DropDownList($accessLevels, ['id' => 'AccessLevel', 'class' => 'form-control', "required" => ""], 'Id', 'Name', $gUser->AccessLevelId); ?>
 		</div>
 		<hr />
 	</div>

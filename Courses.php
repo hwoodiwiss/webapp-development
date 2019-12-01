@@ -21,7 +21,7 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("StartDate", $Now, "gt"
 ?>
 <h3>Courses</h3>
 <hr />
-<table class="table table-dark table-striped">
+<table class="table table-light table-striped">
 	<thead>
 		<tr>
 			<th>Title</th>
@@ -42,7 +42,7 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("StartDate", $Now, "gt"
 				$IsFull = ($CurrCourse->Capacity - $NumBookings == 0)
 			?>
 			<tr>
-				<td><?php echo $CurrCourse->Name ?></td>
+				<td><?php echo htmlspecialchars($CurrCourse->Name) ?></td>
 				<td><?php echo (new DateTime($CurrCourse->StartDate))->format("d/m/yy") ?></td>
 				<td><?php echo $CurrCourse->Duration ?> Days</td>
 				<td>
@@ -69,6 +69,11 @@ $UpcomingCourses = $Courses->Select([], [new DbCondition("StartDate", $Now, "gt"
 							<button class="btn btn-danger" type="submit">Cancel</button>
 						</form>
 					<?php endif; ?>
+				</td>
+			</tr>
+			<tr>
+				<td collspan="6">
+					<?php echo htmlspecialchars($CurrCourse->Description) ?>
 				</td>
 			</tr>
 		<?php endforeach ?>

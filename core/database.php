@@ -4,6 +4,9 @@
 
 	class Db extends PDO
 	{
+		//Basic cache for storing navigation values within a single request
+		//Very naiive implemetation, will probably opt for proper ctx management in later version
+		public static $Cache = array();
 
 		public function __construct($file = __DIR__ . "\\..\\settings.ini", string $section = "database")
 		{
@@ -58,7 +61,15 @@
 					if($ForeignTable != null)
 					{
 						$ForeignType = substr($ForeignTable, 0 , -1);
-						return (new DbHelper($ForeignType))->Find($Val);
+						$CacheName = $ForeignTable . "_" . $Val;
+						//Checks the cache to see if this object already exists
+						if(!array_key_exists($CacheName, Db::$Cache))
+						{
+							//If not, makes a database request to get it
+							Db::$Cache[$CacheName] = (new DbHelper($ForeignType))->Find($Val);
+						}
+						//Returns requested object from the DB Cache
+						return Db::$Cache[$CacheName];
 					}
 				}
 			}
@@ -186,7 +197,7 @@
 			}
 		}
 
-		//Inserts a new object of the type that this DbHelper is built for
+		//Inserts a new object of the type that this DbHelper is configured for
 		public function InsertObj($object)
 		{
 			//Make sure that the 
@@ -234,6 +245,7 @@
 			}
 		}
 
+		//Selectts data from the database
 		public function Select(array $Columns, array $Conditions = [], string $OrderColumn = "", string $OrderDir = "ASC")
 		{
 			$colsString = "";
@@ -291,6 +303,7 @@
 
 		}
 
+		//Finds the record with the requested Id
 		public function Find(string $Id, array $Columns = [])
 		{
 			$colsString = $this->BuildSelectString($Columns);
@@ -320,6 +333,7 @@
 			return $outVal;
 		}
 
+		//Updates an object of the type that this DbHelper is configured for
 		public function UpdateObj($object)
 		{
 			if(get_class($object) != $this->TypeName) throw new Exception("Invalid object type for this helper!");
@@ -335,6 +349,7 @@
 			$this->Update($columnVals, [new DbCondition("Id", $object->Id)]);
 		}
 
+		//Updates an object in teh database
 		public function Update(array $ColumnVals, array $Conditions = [])
 		{
 			$updateString = "UPDATE " . $this->TableName . " SET " 

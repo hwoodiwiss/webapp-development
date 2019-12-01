@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 
 require_once '../../core/utils.php';
 require_once '../../Model/User.php';
+require_once '../../Model/Course.php';
 
 if(!(GetRequestMethod() == 'POST'))
 {
