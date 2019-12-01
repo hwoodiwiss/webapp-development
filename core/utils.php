@@ -136,6 +136,11 @@
 	{
 		if(!isset($_SESSION))
 		{
+			ini_set('session.cookie_httponly', 1);
+			ini_set('session.use_only_cookies', 1);
+			//Allows insecure cookie for localhost non https connections
+			if($_SERVER['HTTP_HOST'] != "localhost") ini_set('session.cookie_secure', 1);
+
 			session_start();
 		}
 	}

@@ -1,0 +1,28 @@
+<svg width="600" height="330" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient3432">
+   <stop stop-color="#050505" id="stop3434" offset="0"/>
+   <stop stop-color="#0a0a0a" id="stop3436" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3406">
+   <stop stop-color="#0a0a0a" id="stop3408" offset="0"/>
+   <stop stop-color="#0f0f0f" id="stop3410" offset="1"/>
+  </linearGradient>
+  <linearGradient xlink:href="#linearGradient3406" id="linearGradient3412" y2="0.988571" x2="0.988571" y1="0.035536" x1="0.035536"/>
+  <linearGradient xlink:href="#linearGradient3432" id="linearGradient3422" y2="-0.005408" x2="0.543859" y1="1" x1="0.543859"/>
+  <linearGradient xlink:href="#linearGradient3432" id="linearGradient3430" y2="0.5" x2="1" y1="0.5" x1="0"/>
+  <linearGradient xlink:href="#linearGradient3432" id="linearGradient4415" y2="1.000008" x2="0.356807" y1="0" x1="0.356807"/>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="svg_2">
+   <g stroke="null" id="layer1">
+    <path stroke="null" fill="url(#linearGradient3430)" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="4" stroke-dasharray="12, 2" stroke-dashoffset="5.4" id="rect3378" d="m143.759848,96.722483l0,59.038364c59.824874,6.733777 113.855413,32.951297 155.676581,71.901155c41.83911,-39.039465 95.789014,-65.160306 155.676581,-71.901155l0,-59.038364l-311.353162,0z"/>
+    <path stroke="null" fill="url(#linearGradient3412)" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="4" stroke-dasharray="12, 2" stroke-dashoffset="5.4" id="rect2406" d="m313.066543,9.976471l274.405931,60.591209c6.958748,1.62204 6.958748,4.233116 0,5.855156l-274.405931,67.333336c-6.95772,1.6218 -18.159556,1.6218 -25.118304,-0.00024l-274.405931,-67.333336c-6.95772,-1.6218 -6.95772,-4.232877 0,-5.854677l274.405931,-60.591209c6.958748,-1.62204 18.160584,-1.62204 25.118304,-0.00024z"/>
+    <path stroke="null" fill="url(#linearGradient4415)" fill-rule="evenodd" stroke-width="1px" id="path4407" d="m311.742655,76.543941l-3.852547,3.370952l83.365495,44.673479l-0.53595,73.792071c-0.097839,13.475576 -10.243625,11.476055 -10.243625,24.002796l0,74.718426c0,21.249906 29.987953,21.249906 29.987953,0l0,-74.718426c0,-11.558485 -10.055863,-11.255786 -10.035176,-24.002796l0.123697,-76.198145l-88.809848,-45.638358z"/>
+    <path stroke="null" fill="url(#linearGradient3422)" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="4" stroke-dasharray="12, 2" stroke-dashoffset="5.4" id="path3414" d="m327.957174,72.53205a27.449317,11.55764 0 1 1 -54.898634,0a27.449317,11.55764 0 1 1 54.898634,0z"/>
+   </g>
+   <text stroke="#000000" font-weight="normal" transform="matrix(12.118713012764257,0,0,8.588744068033495,-1160.630374403381,36.8527330125732) " xml:space="preserve" text-anchor="middle" font-family="Monospace" font-size="24" id="svg_1" y="29.760485" x="120.333922" stroke-width="0" fill="#ff7f00">CM</text>
+  </g>
+ </g>
+</svg>

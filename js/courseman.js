@@ -28,6 +28,8 @@ CM.ReloadAsyncPanel = function(Id, Target, Data)
 	}
 }
 
+//All the default handlers that should be applied to all content, static or dynamic
+//Scope defines th scope to which this should be applied
 function ApplyHandlers(scope)
 {
 

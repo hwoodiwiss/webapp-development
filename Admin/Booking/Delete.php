@@ -20,7 +20,7 @@ $User = SafeGetValue($_SESSION, "User");
 
 $Booking = $Bookings->Find($BookingId);
 
-if(!$User->AccessLevel->Name == "Admin" || $Booking->User->Id != $User->Id)
+if($User->AccessLevel->Name != "Admin" && $Booking->User->Id != $User->Id)
 {
 	if(IsAjax())
 	{

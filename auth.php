@@ -17,7 +17,18 @@ $FoundUsers = $Users->Select([], [new DbCondition("Email", $email)]);
 
 if(count($FoundUsers) !== 1)
 {
-	//El failio
+	//Allows the response to either be JSON or a redirect
+	if(IsAjax())
+	{
+		$Response = new ResponseData(false, '', ['Heading' => 'Username or Password!', 'Content' => 'The username or password was incorrect!', 'Type' => 'danger']);
+		echo $Response->json();
+		exit();
+	}
+	else
+	{
+		header("Location: /login.php?err=e01" . ($location != null ? "&location=" . $location : ""));
+		exit();
+	}
 }
 
 $User = $FoundUsers[0];
@@ -29,7 +40,7 @@ if($User->PassHash != $inputPassHash)
 	//Allows the response to either be JSON or a redirect
 	if(IsAjax())
 	{
-		$Response = new ResponseData(false, '', ['Title' => 'Username or Password!', 'Content' => 'The username or password was incorrect!', 'Type' => 'danger']);
+		$Response = new ResponseData(false, '', ['Heading' => 'Username or Password!', 'Content' => 'The username or password was incorrect!', 'Type' => 'danger']);
 		echo $Response->json();
 		exit();
 	}
