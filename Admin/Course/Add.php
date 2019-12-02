@@ -48,7 +48,7 @@ HtmlHelper::$_Title = 'Admin: Add Course';
 		</div>
 		<div class="form-group col-6">
 			<label>Start Date</label>
-			<?php $HTML->Input("", ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control', "required" => ""], 'date'); ?>
+			<?php $HTML->Input("", ['id' => 'StartDate', 'placeholder' => 'Course Start Date', 'class' => 'form-control', "required" => "", "min" => (new DateTime('now', new DateTimeZone('Europe/London')))->format('Y-m-d')], 'date'); ?>
 		</div>
 		<div class="form-group col-12">
 			<label>Description</label>
@@ -56,11 +56,11 @@ HtmlHelper::$_Title = 'Admin: Add Course';
 		</div>
 		<div class="form-group col-md-6">
 			<label>Duration</label>
-			<?php $HTML->Input("", ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control', "required" => ""], 'number'); ?>
+			<?php $HTML->Input("", ['id' => 'Duration', 'placeholder' => 'Course Duration (Days)', 'class' => 'form-control', "required" => "", "min" => "1"], 'number'); ?>
 		</div>
 		<div class="form-group col-md-6">
 			<label>Capacity</label>
-			<?php $HTML->Input("", ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control', "required" => ""], 'number'); ?>
+			<?php $HTML->Input("", ['id' => 'Capacity', 'placeholder' => 'Course Capacity', 'class' => 'form-control', "required" => "", "min" => "1"], 'number'); ?>
 		</div>
 		<hr />
 	</div>
